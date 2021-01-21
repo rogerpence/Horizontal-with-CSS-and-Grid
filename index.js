@@ -1,9 +1,8 @@
 function TabsManager4(tabsOwnerSelector)
 {
     this.tabsOwnerSelector = tabsOwnerSelector;
-    this.currentTabId = null;
     this.assignClickHandlers();
-    this.selectDefaultTab();
+    this.selectInitialTab();
 }
 
 TabsManager4.prototype.assignClickHandlers = function()
@@ -22,50 +21,29 @@ TabsManager4.prototype.assignClickHandlers = function()
             this.selectTab(tabId);
         });
     });
-    
-    // this.selectInitialTab();
 };
 
-TabsManager4.prototype.selectInitialTab = function() 
-{
-    let tabs = Array.from(document.querySelectorAll(`${this.tabsOwnerSelector} > div.tab-container > div`));
-    let tabSelected = false;
-
-    tabs.forEach(element => {
-        if (element.hasAttribute('data-selected')) {
-            tabSelected = true;
-            this.selectTab(element.getAttribute('data-tab'));
-        }
-    });
-
-    if (!tabSelected) {
-        let firstTabElement = document.querySelector(`${this.tabsOwnerSelector} > div.tab-container > div:first-child`);
-        this.selectTab(firstTabElement.getAttribute('data-tab'));
-    }
-}   
-
 TabsManager4.prototype.enableTab = function(tabId) {
-    let currentTabElement = this.getTabByDataTabAttribute(tabId);
+    let currentTabElement = this.getTabElementByTabId(tabId);
     currentTabElement.removeAttribute('data-disabled');
 }
 
 TabsManager4.prototype.disableTab = function(tabId) {
-    let currentTabElement = this.getTabByDataTabAttribute(tabId);
+    let currentTabElement = this.getTabElementByTabId(tabId);
     currentTabElement.setAttribute('data-disabled','');
 }
 
-TabsManager4.prototype.selectDefaultTab = function() 
+TabsManager4.prototype.selectInitialTab = function() 
 {
     let defaultTabElement;
 
     let tabs = Array.from(document.querySelectorAll(`${this.tabsOwnerSelector} > div.tab-container > div`));
     defaultTabElement = tabs[0];
-    tabs.forEach((element, index) => {
-        this.unselectCurrentTab(element.getAttribute('data-tab'));
+    tabs.forEach((element) => {
         if (element.hasAttribute('data-selected')) {
-            console.log(`selected element is ${element.getAttribute('data-tab')}`);
             defaultTabElement = element;
         }
+        this.unselectCurrentTab(element.getAttribute('data-tab'));
     });
 
     this.selectTab(defaultTabElement.getAttribute('data-tab'));
@@ -81,40 +59,40 @@ TabsManager4.prototype.unselectAllTabs = function(tabId)
 
 TabsManager4.prototype.unselectCurrentTab = function(tabId)
 {
-    if (! this.currentTabId) {
-        return;
-    }
-
-    let currentTabElement = this.getTabByDataTabAttribute(this.currentTabId);
+    let currentTabElement = this.getTabElementByTabId(tabId);
     currentTabElement.removeAttribute('data-selected');
-
-    let tabContentId = currentTabElement.getAttribute('data-tab');
-    this.setTabContentElementDisplay(tabContentId, 'none');
+    this.hideTabContent(tabId);
 }
 
-TabsManager4.prototype.getTabByDataTabAttribute = function(tabId)
+TabsManager4.prototype.getTabElementByTabId = function(tabId)
 {
     const tabElement = document.querySelector(`${this.tabsOwnerSelector} > div.tab-container > div[data-tab="${tabId}"]`);
     return tabElement;
 };
 
-TabsManager4.prototype.setTabContentElementDisplay = function(tabId, display)
+TabsManager4.prototype.showTabContent = function(tabId)
 {
-    let tabInfoElement = document.querySelector(`${this.tabsOwnerSelector} section.${tabId}`);
-    tabInfoElement.style.display = display;
+    let tabContentElement = document.querySelector(`${this.tabsOwnerSelector} section.${tabId}`);
+    tabContentElement.style.display = 'block';
+};
+
+TabsManager4.prototype.hideTabContent = function(tabId)
+{
+    let tabContentElement = document.querySelector(`${this.tabsOwnerSelector} section.${tabId}`);
+    tabContentElement.style.display = 'none';
 };
 
 TabsManager4.prototype.selectTab = function(tabId)
 {
     this.unselectAllTabs();
-    // this.unselectCurrentTab();
-    this.currentTabId = tabId;
 
-    const tabElement = this.getTabByDataTabAttribute(tabId);
+    const tabElement = this.getTabElementByTabId(tabId);
     tabElement.setAttribute('data-selected', '');
 
-    this.setTabContentElementDisplay(tabId, 'block');
+    this.showTabContent(tabId);
 };
+
+
 
 
 const tm4 = new TabsManager4('div.container');

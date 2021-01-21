@@ -20,20 +20,22 @@ div.container, div.other-container {
     width: 42rem;
 }
 
-div.nested-container {
-    border: 1px solid gray;
-    padding: 2rem;
-    width: 30rem;
-}
-
 div.tab-container {
     display: grid;
     grid-auto-columns: minmax(6rem,auto);
     grid-auto-flow: column;
 }
 
+div.tab-container div[data-tab]:hover  {
+    cursor: pointer;
+}
+
+div.tab-container div[data-disabled]:hover  {
+    cursor: default;
+}
+
+
 section.tab-content {
-    /* border: .5em solid navy; */
     border-left: .1rem solid gray;
     border-right: .1rem solid gray;
     border-bottom: .1rem solid gray;
@@ -75,11 +77,3 @@ div.tab-container > :not(div[data-selected]) {
     cursor: default;
 }
 
-
-div.tab-container > div:last-child {
-    /* border-right: .1rem solid navy; */
-}
-
-section.tab-1 {
-    display: block;
-}
