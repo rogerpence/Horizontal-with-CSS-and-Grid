@@ -1,0 +1,85 @@
+:root {
+    --tab-left-radius: 2px;
+    --tab-right-radius: 2px;
+}
+
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: content-box;
+}
+
+.icon-color {
+    color: #393939;
+}
+
+div.container, div.other-container {
+    border: 1px solid gray;
+    padding: 2rem;
+    width: 42rem;
+}
+
+div.nested-container {
+    border: 1px solid gray;
+    padding: 2rem;
+    width: 30rem;
+}
+
+div.tab-container {
+    display: grid;
+    grid-auto-columns: minmax(6rem,auto);
+    grid-auto-flow: column;
+}
+
+section.tab-content {
+    /* border: .5em solid navy; */
+    border-left: .1rem solid gray;
+    border-right: .1rem solid gray;
+    border-bottom: .1rem solid gray;
+    padding: 1rem;
+    display: none;
+    background-color: whitesmoke;
+}
+
+div.tab-container > div {
+    border-left: .1rem solid gray;
+    border-right: .1rem solid gray;
+    border-top: .1rem solid gray;
+    padding: .5rem .5rem .5rem .5rem;
+    background-color: #c7c8c8;
+
+    cursor: pointer;
+
+    -webkit-border-top-left-radius: var(--tab-left-radius);
+    -webkit-border-top-right-radius: var(--tab-right-radius);
+    -moz-border-radius-topleft: var(--tab-left-radius);
+    -moz-border-radius-topright: var(--tab-right-radius);
+    border-top-left-radius: var(--tab-left-radius);
+    border-top-right-radius: var(--tab-right-radius);
+}
+
+div.tab-container > div[data-disabled] {
+    background-color: #e4e6e6;
+    cursor: default;
+    color:gray;
+}
+
+div.tab-container > div[data-selected] {
+    background-color: whitesmoke;
+    cursor: default;
+}
+
+div.tab-container > :not(div[data-selected]) {
+    border-bottom: 1px solid gray;;
+    cursor: default;
+}
+
+
+div.tab-container > div:last-child {
+    /* border-right: .1rem solid navy; */
+}
+
+section.tab-1 {
+    display: block;
+}
